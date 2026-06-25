@@ -47,6 +47,13 @@
       ],
       "matchCurrentValue": "8.4",
       "allowedVersions": "8.4"
+    },
+    {
+      "description": "Keep pnpm on 10.x while this repo supports Node 20.20.0; pnpm 11 requires Node 22.13 or newer.",
+      "matchPackageNames": [
+        "pnpm"
+      ],
+      "allowedVersions": "<11"
     }
   ]
 }

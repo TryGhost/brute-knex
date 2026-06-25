@@ -9,6 +9,7 @@
   ],
   "license": "ISC",
   "private": false,
+  "packageManager": "pnpm@10.34.4",
   "main": "index.js",
   "files": [
     "index.js",
