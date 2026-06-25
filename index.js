@@ -143,5 +143,6 @@ KnexStore.defaultsKnex = {
   // debug: true,
   connection: {
     filename: "./brute-knex.sqlite"
-  }
+  },
+  useNullAsDefault: true
 };
