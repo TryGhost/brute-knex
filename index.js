@@ -12,6 +12,8 @@ var Promise = require('bluebird');
 var KnexStore = module.exports = function (options) {
   var self = this;
 
+  options = options || {};
+
   AbstractClientStore.apply(this, arguments);
   this.options = _.extend({}, KnexStore.defaults, options);
 
@@ -32,10 +34,12 @@ var KnexStore = module.exports = function (options) {
           table.bigInteger('lastRequest').nullable();
           table.bigInteger('lifetime').nullable();
           table.integer('count');
-        })
+        });
       }
     });
   }
+
+  self.ready = Promise.resolve(self.ready);
 };
 KnexStore.prototype = Object.create(AbstractClientStore.prototype);
 
@@ -139,5 +143,6 @@ KnexStore.defaultsKnex = {
   // debug: true,
   connection: {
     filename: "./brute-knex.sqlite"
-  }
+  },
+  useNullAsDefault: true
 };

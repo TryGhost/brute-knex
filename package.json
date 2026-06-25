@@ -9,25 +9,36 @@
   ],
   "license": "ISC",
   "private": false,
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
-    "test": "NODE_ENV=testing node --harmony test"
+    "test": "vitest run --coverage",
+    "test:e2e:sqlite": "BRUTE_KNEX_DIALECTS=sqlite vitest run --coverage",
+    "test:e2e:mysql": "BRUTE_KNEX_DIALECTS=mysql vitest run --coverage",
+    "test:e2e:postgres": "BRUTE_KNEX_DIALECTS=postgres vitest run --coverage"
+  },
+  "engines": {
+    "node": ">=20.20.0"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:llambda/brute-knex.git"
+    "url": "git@github.com:TryGhost/brute-knex.git"
   },
   "devDependencies": {
-    "bluebird": "^3.4.6",
-    "mysql": "^2.6.2",
-    "pg": "^6.1.0",
-    "sqlite3": "^3.0.7",
-    "tape": "^4.0.0",
-    "ghost-ignition": "2.0.0"
+    "@vitest/coverage-v8": "^4.1.9",
+    "mysql2": "^2.3.3",
+    "pg": "^8.22.0",
+    "sqlite3": "^5.1.7",
+    "vitest": "^4.1.9"
   },
   "dependencies": {
-    "express": "^4.14.0",
-    "express-brute": "^1.0.0",
-    "knex": "^0.14.2",
-    "lodash": "^4.16.3"
+    "bluebird": "^3.7.2",
+    "express-brute": "^1.0.1",
+    "knex": "^0.21.6",
+    "lodash": "^4.17.21"
   }
 }
