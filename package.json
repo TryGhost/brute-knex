@@ -17,6 +17,9 @@
     "README.md"
   ],
   "scripts": {
+    "format": "oxfmt .",
+    "lint": "oxlint --quiet && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt .",
     "test": "vitest run --coverage",
     "test:e2e:sqlite": "BRUTE_KNEX_DIALECTS=sqlite vitest run --coverage",
     "test:e2e:mysql": "BRUTE_KNEX_DIALECTS=mysql vitest run --coverage",
@@ -32,6 +35,8 @@
   "devDependencies": {
     "@vitest/coverage-v8": "4.1.9",
     "mysql2": "3.22.5",
+    "oxfmt": "^0.56.0",
+    "oxlint": "^1.71.0",
     "pg": "8.22.0",
     "sqlite3": "6.0.1",
     "vitest": "4.1.9"

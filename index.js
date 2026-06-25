@@ -3,25 +3,28 @@ var AbstractClientStore = require('express-brute/lib/AbstractClientStore');
 var _ = require('lodash');
 
 function rethrowAsync(error) {
-  setTimeout(function () {
-    throw error;
-  }, 0);
+    setTimeout(function () {
+        throw error;
+    }, 0);
 }
 
 function withCallback(promise, callback) {
-  promise = Promise.resolve(promise);
+    promise = Promise.resolve(promise);
 
-  if (typeof callback === 'function') {
-    var callbackPromise = promise.then(function (result) {
-      callback(null, result);
-    }, function (error) {
-      callback(error);
-    });
+    if (typeof callback === 'function') {
+        var callbackPromise = promise.then(
+            function (result) {
+                callback(null, result);
+            },
+            function (error) {
+                callback(error);
+            },
+        );
 
-    callbackPromise.catch(rethrowAsync);
-  }
+        callbackPromise.catch(rethrowAsync);
+    }
 
-  return promise;
+    return promise;
 }
 
 /**
@@ -30,140 +33,156 @@ function withCallback(promise, callback) {
  *
  * @type {module.exports}
  */
-var KnexStore = module.exports = function (options) {
-  var self = this;
+var KnexStore = (module.exports = function (options) {
+    var self = this;
 
-  options = options || {};
+    options = options || {};
 
-  AbstractClientStore.apply(this, arguments);
-  this.options = _.extend({}, KnexStore.defaults, options);
+    AbstractClientStore.apply(this, arguments);
+    this.options = _.extend({}, KnexStore.defaults, options);
 
-  if (this.options.knex) {
-    this.knex = this.options.knex;
-  } else {
-    this.knex = require('knex')(KnexStore.defaultsKnex);
-  }
+    if (this.options.knex) {
+        this.knex = this.options.knex;
+    } else {
+        this.knex = require('knex')(KnexStore.defaultsKnex);
+    }
 
-  if (options.createTable === false) {
-    self.ready = Promise.resolve();
-  } else {
-    self.ready = self.knex.schema.hasTable(self.options.tablename).then(function (exists) {
-      if (!exists) {
-        return self.knex.schema.createTable(self.options.tablename, function (table) {
-          table.string('key');
-          table.bigInteger('firstRequest').nullable();
-          table.bigInteger('lastRequest').nullable();
-          table.bigInteger('lifetime').nullable();
-          table.integer('count');
+    if (options.createTable === false) {
+        self.ready = Promise.resolve();
+    } else {
+        self.ready = self.knex.schema.hasTable(self.options.tablename).then(function (exists) {
+            if (!exists) {
+                return self.knex.schema.createTable(self.options.tablename, function (table) {
+                    table.string('key');
+                    table.bigInteger('firstRequest').nullable();
+                    table.bigInteger('lastRequest').nullable();
+                    table.bigInteger('lifetime').nullable();
+                    table.integer('count');
+                });
+            }
         });
-      }
-    });
-  }
+    }
 
-  self.ready = Promise.resolve(self.ready);
-};
+    self.ready = Promise.resolve(self.ready);
+});
 KnexStore.prototype = Object.create(AbstractClientStore.prototype);
 
 KnexStore.prototype.set = function (key, value, lifetime, callback) {
-  var self = this;
-  lifetime = lifetime || 0;
+    var self = this;
+    lifetime = lifetime || 0;
 
-  return withCallback(self.ready.then(function () {
-    return self.knex.transaction(function (trx) {
-      return trx.select('*').forUpdate().from(self.options.tablename).where('key', '=', key)
-      .then(function (foundKeys) {
-        if (foundKeys.length == 0) {
-          return trx.from(self.options.tablename)
-          .insert({
-            key: key,
-            lifetime: new Date(Date.now() + lifetime  * 1000).getTime(),
-            lastRequest: new Date(value.lastRequest).getTime(),
-            firstRequest: new Date(value.firstRequest).getTime(),
-            count: value.count
-          })
-        } else {
-          return trx(self.options.tablename)
-          .where('key', '=', key)
-          .update({
-            lifetime: new Date(Date.now() + lifetime  * 1000).getTime(),
-            count: value.count,
-            lastRequest: new Date(value.lastRequest).getTime()
-          })
-        }
-      })
-    })
-  }), callback);
+    return withCallback(
+        self.ready.then(function () {
+            return self.knex.transaction(function (trx) {
+                return trx
+                    .select('*')
+                    .forUpdate()
+                    .from(self.options.tablename)
+                    .where('key', '=', key)
+                    .then(function (foundKeys) {
+                        if (foundKeys.length == 0) {
+                            return trx.from(self.options.tablename).insert({
+                                key: key,
+                                lifetime: new Date(Date.now() + lifetime * 1000).getTime(),
+                                lastRequest: new Date(value.lastRequest).getTime(),
+                                firstRequest: new Date(value.firstRequest).getTime(),
+                                count: value.count,
+                            });
+                        } else {
+                            return trx(self.options.tablename)
+                                .where('key', '=', key)
+                                .update({
+                                    lifetime: new Date(Date.now() + lifetime * 1000).getTime(),
+                                    count: value.count,
+                                    lastRequest: new Date(value.lastRequest).getTime(),
+                                });
+                        }
+                    });
+            });
+        }),
+        callback,
+    );
 };
 
 KnexStore.prototype.get = function (key, callback) {
-  var self = this;
-  return withCallback(self.ready.then(function () {
-    return self.clearExpired();
-  })
-  .then(function () {
-    return self.knex.select('*')
-    .from(self.options.tablename)
-    .where('key', '=', key)
-  })
-  .then(function (response) {
-    var o = null;
-    if (response[0]) {
-      o = {};
-      o.lastRequest = new Date(response[0].lastRequest);
-      o.firstRequest = new Date(response[0].firstRequest);
-      o.count = response[0].count;      
-    }
-    return o;
-  }), callback);
+    var self = this;
+    return withCallback(
+        self.ready
+            .then(function () {
+                return self.clearExpired();
+            })
+            .then(function () {
+                return self.knex.select('*').from(self.options.tablename).where('key', '=', key);
+            })
+            .then(function (response) {
+                var o = null;
+                if (response[0]) {
+                    o = {};
+                    o.lastRequest = new Date(response[0].lastRequest);
+                    o.firstRequest = new Date(response[0].firstRequest);
+                    o.count = response[0].count;
+                }
+                return o;
+            }),
+        callback,
+    );
 };
 KnexStore.prototype.reset = function (key, callback) {
-  var self = this;
-  return withCallback(self.ready.then(function () {
-    return self.knex(self.options.tablename)
-    .where('key', '=', key)
-    .del()
-  }), callback);
+    var self = this;
+    return withCallback(
+        self.ready.then(function () {
+            return self.knex(self.options.tablename).where('key', '=', key).del();
+        }),
+        callback,
+    );
 };
 
 KnexStore.prototype.increment = function (key, lifetime, callback) {
-  var self = this;
-  return withCallback(self.get(key).then(function (result) {
-    if (result) {
-      return self.knex(self.options.tablename)
-      .increment('count', 1)
-      .where('key', '=', key)
-    } else {
-      return self.knex(self.options.tablename)
-      .insert({
-        key: key,
-        firstRequest: new Date().getTime(),
-        lastRequest: new Date().getTime(),
-        lifetime: new Date(Date.now() + lifetime  * 1000).getTime(),
-        count: 1
-      })
-    }
-  }), callback);
+    var self = this;
+    return withCallback(
+        self.get(key).then(function (result) {
+            if (result) {
+                return self
+                    .knex(self.options.tablename)
+                    .increment('count', 1)
+                    .where('key', '=', key);
+            } else {
+                return self.knex(self.options.tablename).insert({
+                    key: key,
+                    firstRequest: new Date().getTime(),
+                    lastRequest: new Date().getTime(),
+                    lifetime: new Date(Date.now() + lifetime * 1000).getTime(),
+                    count: 1,
+                });
+            }
+        }),
+        callback,
+    );
 };
 
 KnexStore.prototype.clearExpired = function (callback) {
-  var self = this;
-  return withCallback(self.ready.then(function () {
-    return self.knex(self.options.tablename)
-    .del()
-    .where('lifetime', '<', new Date().getTime())
-  }), callback);
+    var self = this;
+    return withCallback(
+        self.ready.then(function () {
+            return self
+                .knex(self.options.tablename)
+                .del()
+                .where('lifetime', '<', new Date().getTime());
+        }),
+        callback,
+    );
 };
 
 KnexStore.defaults = {
-  tablename: 'brute',
-  createTable: true
+    tablename: 'brute',
+    createTable: true,
 };
 
 KnexStore.defaultsKnex = {
-  client: 'sqlite3',
-  // debug: true,
-  connection: {
-    filename: "./brute-knex.sqlite"
-  },
-  useNullAsDefault: true
+    client: 'sqlite3',
+    // debug: true,
+    connection: {
+        filename: './brute-knex.sqlite',
+    },
+    useNullAsDefault: true,
 };
