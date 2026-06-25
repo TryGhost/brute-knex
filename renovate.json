@@ -9,6 +9,12 @@
       "matchManagers": [
         "github-actions"
       ],
+      "matchDatasources": [
+        "node-version"
+      ],
+      "matchDepNames": [
+        "node"
+      ],
       "matchPackageNames": [
         "node"
       ],
@@ -21,6 +27,23 @@
         "knex"
       ],
       "allowedVersions": "<3"
+    },
+    {
+      "description": "Keep CI MySQL services on the 8.4 line; Ghost and Daisy.js use MySQL 8 and compatibility testing must not drift to newer server majors.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchDepNames": [
+        "mysql"
+      ],
+      "matchPackageNames": [
+        "mysql"
+      ],
+      "matchCurrentValue": "8.4",
+      "allowedVersions": "8.4"
     }
   ]
 }
