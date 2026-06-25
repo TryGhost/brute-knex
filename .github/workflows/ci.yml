@@ -126,10 +126,52 @@ jobs:
       - name: Run Postgres e2e tests
         run: npm run test:e2e:postgres
 
+  e2e-daisy-knex:
+    name: E2E Daisy Knex 0.21 (Node 20.20.0, MySQL)
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: brute_knex_test
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --host=127.0.0.1 --password=root --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          cache: npm
+          node-version: 20.20.0
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Daisy Knex compatibility fixture
+        run: npm install --no-save --package-lock=false --legacy-peer-deps knex-0-21@npm:knex@0.21.6
+
+      - name: Run MySQL e2e tests with Daisy's Knex floor
+        env:
+          BRUTE_KNEX_KNEX_PACKAGE: knex-0-21
+        run: npm run test:e2e:mysql
+
   all-tests-pass:
     name: All tests pass
     if: always()
     needs:
+      - e2e-daisy-knex
       - e2e-mysql
       - e2e-postgres
       - e2e-sqlite
