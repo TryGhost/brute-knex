@@ -52,7 +52,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.4
+        image: mysql:8.4@sha256:d36d39a64cd12a5c1cc9e6aa2bfb5f8d4c81a2f6586e0a04a9ae13939db02209
         env:
           MYSQL_DATABASE: brute_knex_test
           MYSQL_ROOT_PASSWORD: root
@@ -95,7 +95,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:16@sha256:287eced1f33b59ed265ed13a60d3680dd7646d70c4dc0e785f59a470ebc03eeb
         env:
           POSTGRES_DB: brute_knex_test
           POSTGRES_PASSWORD: postgres
