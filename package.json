@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.1.9",
-    "mysql2": "^2.3.3",
+    "mysql2": "^3.0.0",
     "pg": "^8.22.0",
     "sqlite3": "^5.1.7",
     "vitest": "^4.1.9"
