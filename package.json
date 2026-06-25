@@ -17,6 +17,7 @@
   ],
   "scripts": {
     "test": "vitest run --coverage",
+    "test:e2e:sqlite": "BRUTE_KNEX_DIALECTS=sqlite vitest run --coverage",
     "test:e2e:mysql": "BRUTE_KNEX_DIALECTS=mysql vitest run --coverage",
     "test:e2e:postgres": "BRUTE_KNEX_DIALECTS=postgres vitest run --coverage"
   },

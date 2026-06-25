@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Tests (Node ${{ matrix.node }})
+  e2e-sqlite:
+    name: E2E SQLite (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -36,8 +36,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
+      - name: Run SQLite e2e tests
+        run: npm run test:e2e:sqlite
 
   e2e-mysql:
     name: E2E MySQL (Node ${{ matrix.node }})
@@ -132,7 +132,7 @@ jobs:
     needs:
       - e2e-mysql
       - e2e-postgres
-      - test
+      - e2e-sqlite
     runs-on: ubuntu-latest
     steps:
       - name: Verify all required jobs succeeded
