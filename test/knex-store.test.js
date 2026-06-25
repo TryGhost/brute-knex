@@ -4,8 +4,10 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const {spawnSync} = require('child_process');
-const knexFactory = require('knex');
 const KnexStore = require('../index');
+
+const knexPackageName = process.env.BRUTE_KNEX_KNEX_PACKAGE || 'knex';
+const knexFactory = require(knexPackageName);
 
 const dialects = (process.env.BRUTE_KNEX_DIALECTS || 'sqlite')
   .split(',')
