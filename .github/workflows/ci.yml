@@ -11,8 +11,15 @@ permissions:
 
 jobs:
   test:
-    name: Tests (Node 20.20.0)
+    name: Tests (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 20.20.0
+          - 22
+          - 24
 
     steps:
       - name: Check out repository
@@ -24,7 +31,7 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           cache: npm
-          node-version: 20.20.0
+          node-version: ${{ matrix.node }}
 
       - name: Install dependencies
         run: npm ci
@@ -32,9 +39,16 @@ jobs:
       - name: Run tests
         run: npm test
 
-  e2e:
-    name: E2E (Node 20.20.0, MySQL)
+  e2e-mysql:
+    name: E2E MySQL (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 20.20.0
+          - 22
+          - 24
 
     services:
       mysql:
@@ -60,19 +74,64 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           cache: npm
-          node-version: 20.20.0
+          node-version: ${{ matrix.node }}
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run e2e tests
-        run: npm run test:e2e
+      - name: Run MySQL e2e tests
+        run: npm run test:e2e:mysql
+
+  e2e-postgres:
+    name: E2E Postgres (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - 20.20.0
+          - 22
+          - 24
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: brute_knex_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready --dbname=brute_knex_test --host=127.0.0.1 --username=postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          cache: npm
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Postgres e2e tests
+        run: npm run test:e2e:postgres
 
   all-tests-pass:
     name: All tests pass
     if: always()
     needs:
-      - e2e
+      - e2e-mysql
+      - e2e-postgres
       - test
     runs-on: ubuntu-latest
     steps:

@@ -118,7 +118,9 @@ async function createTable(knex, tablename) {
   });
 }
 
-describe('default sqlite store', () => {
+const describeDefaultSqlite = dialects.includes('sqlite') ? describe : describe.skip;
+
+describeDefaultSqlite('default sqlite store', () => {
   const defaultDbPath = path.join(process.cwd(), 'brute-knex.sqlite');
 
   afterEach(() => {
