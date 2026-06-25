@@ -1,7 +1,28 @@
 'use strict';
 var AbstractClientStore = require('express-brute/lib/AbstractClientStore');
 var _ = require('lodash');
-var Promise = require('bluebird');
+
+function rethrowAsync(error) {
+  setTimeout(function () {
+    throw error;
+  }, 0);
+}
+
+function withCallback(promise, callback) {
+  promise = Promise.resolve(promise);
+
+  if (typeof callback === 'function') {
+    var callbackPromise = promise.then(function (result) {
+      callback(null, result);
+    }, function (error) {
+      callback(error);
+    });
+
+    callbackPromise.catch(rethrowAsync);
+  }
+
+  return promise;
+}
 
 /**
  * we are using bigInteger to store a UTC timestamp
@@ -47,7 +68,7 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
   var self = this;
   lifetime = lifetime || 0;
 
-  return self.ready.then(function () {
+  return withCallback(self.ready.then(function () {
     return self.knex.transaction(function (trx) {
       return trx.select('*').forUpdate().from(self.options.tablename).where('key', '=', key)
       .then(function (foundKeys) {
@@ -71,12 +92,12 @@ KnexStore.prototype.set = function (key, value, lifetime, callback) {
         }
       })
     })
-  }).asCallback(callback);
+  }), callback);
 };
 
 KnexStore.prototype.get = function (key, callback) {
   var self = this;
-  return self.ready.tap(function () {
+  return withCallback(self.ready.then(function () {
     return self.clearExpired();
   })
   .then(function () {
@@ -93,20 +114,20 @@ KnexStore.prototype.get = function (key, callback) {
       o.count = response[0].count;      
     }
     return o;
-  }).asCallback(callback);
+  }), callback);
 };
 KnexStore.prototype.reset = function (key, callback) {
   var self = this;
-  return self.ready.then(function () {
+  return withCallback(self.ready.then(function () {
     return self.knex(self.options.tablename)
     .where('key', '=', key)
     .del()
-  }).asCallback(callback);
+  }), callback);
 };
 
 KnexStore.prototype.increment = function (key, lifetime, callback) {
   var self = this;
-  return self.get(key).then(function (result) {
+  return withCallback(self.get(key).then(function (result) {
     if (result) {
       return self.knex(self.options.tablename)
       .increment('count', 1)
@@ -121,16 +142,16 @@ KnexStore.prototype.increment = function (key, lifetime, callback) {
         count: 1
       })
     }
-  }).asCallback(callback);
+  }), callback);
 };
 
 KnexStore.prototype.clearExpired = function (callback) {
   var self = this;
-  return self.ready.then(function () {
+  return withCallback(self.ready.then(function () {
     return self.knex(self.options.tablename)
     .del()
     .where('lifetime', '<', new Date().getTime())
-  }).asCallback(callback);
+  }), callback);
 };
 
 KnexStore.defaults = {
