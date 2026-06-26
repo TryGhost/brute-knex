@@ -83,6 +83,7 @@ The MySQL and Postgres commands expect local test databases unless they are runn
 
 ## Copyright & License
 
+Copyright (c) 2014, llambda <xxgsoftware@gmail.com>.
 Released under the [ISC license](LICENSE).
 
 [npm-version-image]: https://img.shields.io/npm/v/brute-knex.svg
