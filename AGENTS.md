@@ -4,7 +4,7 @@ This is a small CommonJS package for `express-brute`; start with `README.md` for
 
 ## Commands
 
-Use Corepack and pnpm 10.x:
+Use the organisation default Node.js `22` from `.nvmrc`, Corepack, and pnpm 10.x:
 
 ```sh
 corepack enable

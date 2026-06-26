@@ -62,7 +62,7 @@ The table stores `key`, `firstRequest`, `lastRequest`, `lifetime`, and `count` c
 
 ## Development
 
-This repo uses pnpm `10.x` through Corepack. Node.js `20.20.0` is the lowest supported runtime required by existing consumers.
+This repo uses the organisation default Node.js `22` for local development through `.nvmrc`, and pnpm `10.x` through Corepack. Package support still starts at Node.js `20.20.0` for existing consumers.
 
 ```sh
 corepack enable
