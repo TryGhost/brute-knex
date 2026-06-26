@@ -13,6 +13,12 @@ pnpm test
 pnpm lint
 ```
 
+Publish releases with the shared TryGhost release helper:
+
+```sh
+pnpm ship
+```
+
 Database-specific checks:
 
 ```sh
