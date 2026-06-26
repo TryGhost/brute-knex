@@ -5,7 +5,7 @@
   ],
   "packageRules": [
     {
-      "description": "Keep setup-node's CI runtime value pinned to Node 20.20.0; this is the lowest Daisy.js consumer runtime and must not drift to patch releases.",
+      "description": "Keep setup-node's CI runtime value pinned to Node 20.20.0; this is the lowest existing consumer runtime and must not drift to patch releases.",
       "matchManagers": [
         "github-actions"
       ],
@@ -25,14 +25,14 @@
       "enabled": false
     },
     {
-      "description": "Keep brute-knex on Knex v2 for its default store dependency; Ghost uses Knex 2.x and Daisy.js compatibility with a provided Knex 0.21.6 instance is covered by CI.",
+      "description": "Keep brute-knex on Knex v2 for its default store dependency; Ghost uses Knex 2.x and existing consumer compatibility with a provided Knex 0.21.6 instance is covered by CI.",
       "matchPackageNames": [
         "knex"
       ],
       "allowedVersions": "<3"
     },
     {
-      "description": "Keep CI MySQL services on the 8.4 line; Ghost and Daisy.js use MySQL 8 and compatibility testing must not drift to newer server majors.",
+      "description": "Keep CI MySQL services on the 8.4 line; Ghost and existing consumers use MySQL 8 and compatibility testing must not drift to newer server majors.",
       "matchManagers": [
         "github-actions"
       ],

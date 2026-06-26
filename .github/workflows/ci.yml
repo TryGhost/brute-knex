@@ -135,8 +135,8 @@ jobs:
       - name: Run Postgres e2e tests
         run: pnpm run test:e2e:postgres
 
-  e2e-daisy-knex:
-    name: E2E Daisy Knex 0.21 (Node 20.20.0, MySQL)
+  e2e-lowest-knex:
+    name: E2E Lowest Supported Knex 0.21 (Node 20.20.0, MySQL)
     runs-on: ubuntu-latest
 
     services:
@@ -171,15 +171,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Daisy Knex compatibility fixture
+      - name: Install lowest supported Knex fixture
         run: |
-          mkdir -p "$RUNNER_TEMP/brute-knex-daisy-fixture"
-          pnpm --dir "$RUNNER_TEMP/brute-knex-daisy-fixture" add knex-0-21@npm:knex@0.21.6 mysql2@3.22.5
+          mkdir -p "$RUNNER_TEMP/brute-knex-lowest-knex-fixture"
+          pnpm --dir "$RUNNER_TEMP/brute-knex-lowest-knex-fixture" add knex-0-21@npm:knex@0.21.6 mysql2@3.22.5
 
-      - name: Run MySQL e2e tests with Daisy's Knex floor
+      - name: Run MySQL e2e tests with the lowest supported Knex floor
         env:
           BRUTE_KNEX_KNEX_PACKAGE: knex-0-21
-          NODE_PATH: ${{ runner.temp }}/brute-knex-daisy-fixture/node_modules
+          NODE_PATH: ${{ runner.temp }}/brute-knex-lowest-knex-fixture/node_modules
         run: pnpm run test:e2e:mysql
 
   lint:
@@ -211,7 +211,7 @@ jobs:
     name: All tests pass
     if: always()
     needs:
-      - e2e-daisy-knex
+      - e2e-lowest-knex
       - e2e-mysql
       - e2e-postgres
       - e2e-sqlite
