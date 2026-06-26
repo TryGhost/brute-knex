@@ -1,5 +1,5 @@
 const ExpressBrute = require('express-brute');
-const BruteKnex = require('brute-knex');
+const BruteKnex = require('@tryghost/brute-knex');
 
 var store = new BruteKnex();
 

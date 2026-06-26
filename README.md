@@ -1,4 +1,4 @@
-# brute-knex
+# @tryghost/brute-knex
 
 Knex-backed store for [express-brute](https://github.com/AdamPflug/express-brute) that persists rate-limit state in SQL databases.
 
@@ -9,7 +9,7 @@ Knex-backed store for [express-brute](https://github.com/AdamPflug/express-brute
 
 ## What It Does
 
-`brute-knex` lets `express-brute` share brute-force counters through a Knex table instead of keeping them in process memory. It can create its storage table automatically, use a caller-provided Knex instance, or fall back to a local SQLite database when no Knex instance is supplied.
+`@tryghost/brute-knex` lets `express-brute` share brute-force counters through a Knex table instead of keeping them in process memory. It can create its storage table automatically, use a caller-provided Knex instance, or fall back to a local SQLite database when no Knex instance is supplied.
 
 The package supports Node.js `>=20.20.0`. CI exercises the store against SQLite, MySQL, and Postgres, with additional MySQL coverage for existing consumers that provide Knex `0.21.6`.
 
@@ -18,7 +18,7 @@ The package supports Node.js `>=20.20.0`. CI exercises the store against SQLite,
 Install the package and the Knex database driver your app uses:
 
 ```sh
-npm install brute-knex knex mysql2
+npm install @tryghost/brute-knex knex mysql2
 ```
 
 Use `pg` instead of `mysql2` for Postgres, or `sqlite3` for SQLite.
@@ -28,7 +28,7 @@ Use `pg` instead of `mysql2` for Postgres, or `sqlite3` for SQLite.
 ```js
 const ExpressBrute = require('express-brute');
 const Knex = require('knex');
-const BruteKnex = require('brute-knex');
+const BruteKnex = require('@tryghost/brute-knex');
 
 const knex = Knex({
     client: 'mysql2',
@@ -81,14 +81,24 @@ pnpm run test:e2e:postgres
 
 The MySQL and Postgres commands expect local test databases unless they are running inside the GitHub Actions service containers. The test suite reads standard connection env vars such as `MYSQL_HOST`, `MYSQL_DATABASE`, `POSTGRES_HOST`, and `POSTGRES_DB`.
 
+## Releasing
+
+Releases are handled by [`@tryghost/pro-ship`](https://www.npmjs.com/package/@tryghost/pro-ship):
+
+```sh
+pnpm ship
+```
+
+The `ship` script bumps the version, creates the release commit and tag, pushes them, and publishes `@tryghost/brute-knex` to npm.
+
 ## Copyright & License
 
 Copyright (c) 2014, llambda <xxgsoftware@gmail.com>.
 Released under the [ISC license](LICENSE).
 
-[npm-version-image]: https://img.shields.io/npm/v/brute-knex.svg
-[npm-downloads-image]: https://img.shields.io/npm/dm/brute-knex.svg
-[npm-image]: https://nodei.co/npm/brute-knex.png?downloads=true&downloadRank=true&stars=true
-[npm-url]: https://npmjs.org/package/brute-knex
-[node-image]: https://img.shields.io/node/v/brute-knex.svg
+[npm-version-image]: https://img.shields.io/npm/v/@tryghost/brute-knex.svg
+[npm-downloads-image]: https://img.shields.io/npm/dm/@tryghost/brute-knex.svg
+[npm-image]: https://nodei.co/npm/@tryghost/brute-knex.png?downloads=true&downloadRank=true&stars=true
+[npm-url]: https://npmjs.org/package/@tryghost/brute-knex
+[node-image]: https://img.shields.io/node/v/@tryghost/brute-knex.svg
 [node-url]: https://nodejs.org/download/
