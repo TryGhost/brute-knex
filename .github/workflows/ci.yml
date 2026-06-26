@@ -101,7 +101,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16@sha256:287eced1f33b59ed265ed13a60d3680dd7646d70c4dc0e785f59a470ebc03eeb
+        image: postgres:18@sha256:1a5b3e745bbd82d6deb146505e504da3c2f248cac15e431951b148fbe4f8613a
         env:
           POSTGRES_DB: brute_knex_test
           POSTGRES_PASSWORD: postgres
