@@ -10,10 +10,10 @@ The package supports Node.js `>=20.20.0`. CI exercises the store against SQLite,
 
 ## Installation
 
-Install the package and the Knex database driver your app uses:
+Install the package, `express-brute`, and the Knex database driver your app uses:
 
 ```sh
-npm install @tryghost/brute-knex knex mysql2
+npm install express-brute @tryghost/brute-knex knex mysql2
 ```
 
 Use `pg` instead of `mysql2` for Postgres, or `sqlite3` for SQLite.

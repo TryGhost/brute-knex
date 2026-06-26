@@ -1,5 +1,4 @@
 'use strict';
-const AbstractClientStore = require('express-brute/lib/AbstractClientStore');
 
 function rethrowAsync(error) {
     setTimeout(() => {
@@ -33,7 +32,6 @@ function withCallback(promise, callback) {
  * @type {module.exports}
  */
 const KnexStore = (module.exports = function KnexStore(options = {}) {
-    AbstractClientStore.apply(this, arguments);
     this.options = Object.assign({}, KnexStore.defaults, options);
 
     if (this.options.knex) {
@@ -60,8 +58,6 @@ const KnexStore = (module.exports = function KnexStore(options = {}) {
 
     this.ready = Promise.resolve(this.ready);
 });
-KnexStore.prototype = Object.create(AbstractClientStore.prototype);
-KnexStore.prototype.constructor = KnexStore;
 
 KnexStore.prototype.set = function (key, value, lifetime, callback) {
     lifetime = lifetime || 0;

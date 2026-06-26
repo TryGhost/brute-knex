@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@tryghost/pro-ship": "1.1.4",
+    "@types/node": "26.0.1",
     "@vitest/coverage-v8": "4.1.9",
     "mysql2": "3.22.5",
     "oxfmt": "0.56.0",
@@ -51,8 +52,15 @@
     "typescript": "6.0.3",
     "vitest": "4.1.9"
   },
+  "peerDependencies": {
+    "express-brute": "^1.0.1"
+  },
+  "peerDependenciesMeta": {
+    "express-brute": {
+      "optional": true
+    }
+  },
   "dependencies": {
-    "express-brute": "1.0.1",
     "knex": "2.5.1"
   }
 }
