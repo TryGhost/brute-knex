@@ -11,19 +11,22 @@
   "private": false,
   "packageManager": "pnpm@10.34.4",
   "main": "index.js",
+  "types": "index.d.ts",
   "files": [
     "index.js",
+    "index.d.ts",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
     "format": "oxfmt .",
-    "lint": "oxlint --quiet && oxfmt --check .",
+    "lint": "oxlint --quiet && oxfmt --check . && pnpm run test:types",
     "lint:fix": "oxlint --fix && oxfmt .",
     "test": "vitest run --coverage",
     "test:e2e:sqlite": "BRUTE_KNEX_DIALECTS=sqlite vitest run --coverage",
     "test:e2e:mysql": "BRUTE_KNEX_DIALECTS=mysql vitest run --coverage",
-    "test:e2e:postgres": "BRUTE_KNEX_DIALECTS=postgres vitest run --coverage"
+    "test:e2e:postgres": "BRUTE_KNEX_DIALECTS=postgres vitest run --coverage",
+    "test:types": "tsc --noEmit -p tsconfig.types.json"
   },
   "engines": {
     "node": ">=20.20.0"
@@ -39,6 +42,7 @@
     "oxlint": "1.71.0",
     "pg": "8.22.0",
     "sqlite3": "6.0.1",
+    "typescript": "6.0.3",
     "vitest": "4.1.9"
   },
   "dependencies": {
