@@ -2,11 +2,6 @@
 
 Knex-backed store for [express-brute](https://github.com/AdamPflug/express-brute) that persists rate-limit state in SQL databases.
 
-[![NPM Version][npm-version-image]][npm-url]
-[![NPM Downloads][npm-downloads-image]][npm-url]
-[![Node.js Version][node-image]][node-url]
-[![NPM][npm-image]][npm-url]
-
 ## What It Does
 
 `@tryghost/brute-knex` lets `express-brute` share brute-force counters through a Knex table instead of keeping them in process memory. It can create its storage table automatically, use a caller-provided Knex instance, or fall back to a local SQLite database when no Knex instance is supplied.
@@ -95,10 +90,3 @@ The `ship` script bumps the version, creates the release commit and tag, pushes 
 
 Copyright (c) 2014, llambda <xxgsoftware@gmail.com>.
 Released under the [ISC license](LICENSE).
-
-[npm-version-image]: https://img.shields.io/npm/v/@tryghost/brute-knex.svg
-[npm-downloads-image]: https://img.shields.io/npm/dm/@tryghost/brute-knex.svg
-[npm-image]: https://nodei.co/npm/@tryghost/brute-knex.png?downloads=true&downloadRank=true&stars=true
-[npm-url]: https://npmjs.org/package/@tryghost/brute-knex
-[node-image]: https://img.shields.io/node/v/@tryghost/brute-knex.svg
-[node-url]: https://nodejs.org/download/
