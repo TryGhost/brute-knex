@@ -44,7 +44,7 @@
     "@tryghost/pro-ship": "1.1.4",
     "@vitest/coverage-v8": "4.1.9",
     "mysql2": "3.22.5",
-    "oxfmt": "0.56.0",
+    "oxfmt": "0.57.0",
     "oxlint": "1.71.0",
     "pg": "8.22.0",
     "sqlite3": "6.0.1",
