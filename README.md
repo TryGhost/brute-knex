@@ -84,7 +84,7 @@ Releases are handled by [`@tryghost/pro-ship`](https://www.npmjs.com/package/@tr
 pnpm ship
 ```
 
-The `ship` script bumps the version, creates the release commit and tag, pushes them, and publishes `@tryghost/brute-knex` to npm.
+The `ship` script bumps the version, creates the release commit and tag, and pushes them. The push to `main` triggers the [Publish workflow](.github/workflows/publish.yml), which publishes `@tryghost/brute-knex` to npm through [trusted publishing](https://docs.npmjs.com/trusted-publishers) (GitHub Actions OIDC) — no npm tokens are involved. The workflow skips versions that are already on npm and can be run manually as a dry run from the Actions tab.
 
 ## Copyright & License
 

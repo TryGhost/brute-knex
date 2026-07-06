@@ -26,7 +26,7 @@
     "lint": "oxlint --quiet && oxfmt --check . && pnpm run test:types",
     "lint:fix": "oxlint --fix && oxfmt .",
     "preship": "pnpm lint && pnpm test",
-    "ship": "pro-ship --publish",
+    "ship": "pro-ship",
     "test": "vitest run --coverage",
     "test:e2e:sqlite": "BRUTE_KNEX_DIALECTS=sqlite vitest run --coverage",
     "test:e2e:mysql": "BRUTE_KNEX_DIALECTS=mysql vitest run --coverage",
