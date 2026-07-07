@@ -6,7 +6,7 @@ Knex-backed store for [express-brute](https://github.com/AdamPflug/express-brute
 
 `@tryghost/brute-knex` lets `express-brute` share brute-force counters through a Knex table instead of keeping them in process memory. It can create its storage table automatically, use a caller-provided Knex instance, or fall back to a local SQLite database when no Knex instance is supplied.
 
-The package supports Node.js `>=20.20.0`. CI exercises the store against SQLite, MySQL, and Postgres, with additional MySQL coverage for existing consumers that provide Knex `0.21.6`.
+The package supports Node.js `>=20.20.0`. CI exercises the store against SQLite, MySQL, and Postgres using Knex `2.4.2`, the version currently shared by Ghost and Daisy.
 
 ## Installation
 

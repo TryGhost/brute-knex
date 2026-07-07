@@ -25,11 +25,11 @@
       "enabled": false
     },
     {
-      "description": "Keep brute-knex on Knex v2 for its default store dependency; Ghost uses Knex 2.x and existing consumer compatibility with a provided Knex 0.21.6 instance is covered by CI.",
+      "description": "Keep brute-knex on the Knex version currently shared by Ghost and Daisy; update this only after both consumers move together.",
       "matchPackageNames": [
         "knex"
       ],
-      "allowedVersions": "<3"
+      "allowedVersions": "2.4.2"
     },
     {
       "description": "Keep CI MySQL services on the 8.4 line; Ghost and existing consumers use MySQL 8 and compatibility testing must not drift to newer server majors.",

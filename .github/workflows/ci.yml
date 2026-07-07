@@ -135,53 +135,6 @@ jobs:
       - name: Run Postgres e2e tests
         run: pnpm run test:e2e:postgres
 
-  e2e-lowest-knex:
-    name: E2E Lowest Supported Knex 0.21 (Node 20.20.0, MySQL)
-    runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.4@sha256:d36d39a64cd12a5c1cc9e6aa2bfb5f8d4c81a2f6586e0a04a9ae13939db02209
-        env:
-          MYSQL_DATABASE: brute_knex_test
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --host=127.0.0.1 --password=root --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-        with:
-          persist-credentials: false
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Set up Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
-        with:
-          cache: pnpm
-          node-version: 20.20.0
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install lowest supported Knex fixture
-        run: |
-          mkdir -p "$RUNNER_TEMP/brute-knex-lowest-knex-fixture"
-          pnpm --dir "$RUNNER_TEMP/brute-knex-lowest-knex-fixture" add knex-0-21@npm:knex@0.21.6 mysql2@3.22.5
-
-      - name: Run MySQL e2e tests with the lowest supported Knex floor
-        env:
-          BRUTE_KNEX_KNEX_PACKAGE: knex-0-21
-          NODE_PATH: ${{ runner.temp }}/brute-knex-lowest-knex-fixture/node_modules
-        run: pnpm run test:e2e:mysql
-
   lint:
     name: Lint (Node 20.20.0)
     runs-on: ubuntu-latest
@@ -211,7 +164,6 @@ jobs:
     name: Required checks pass
     if: always()
     needs:
-      - e2e-lowest-knex
       - e2e-mysql
       - e2e-postgres
       - e2e-sqlite
