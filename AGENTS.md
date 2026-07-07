@@ -33,6 +33,7 @@ MySQL and Postgres tests need local services unless running in GitHub Actions. T
 
 - Keep Node.js `20.20.0` as the minimum support floor; existing consumers depend on that.
 - Keep pnpm on `10.x` while Node `20.20.0` is supported. pnpm 11 requires newer Node.
+- Keep Knex aligned with the version currently shared by Ghost and Daisy (`2.4.2` at the time of writing).
 - Preserve the local Renovate guards for Node, pnpm, Knex, and MySQL compatibility.
 - Do not mix schema or behavior changes, such as unique-key/upsert changes, into tooling or docs PRs. Those need focused SQLite/MySQL/Postgres compatibility tests.
 - If changing store behavior, run the default SQLite path and the relevant database e2e command before handing off.

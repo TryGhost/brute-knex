@@ -6,8 +6,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const KnexStore = require('../index');
 
-const knexPackageName = process.env.BRUTE_KNEX_KNEX_PACKAGE || 'knex';
-const knexFactory = require(knexPackageName);
+const knexFactory = require('knex');
 
 const dialects = (process.env.BRUTE_KNEX_DIALECTS || 'sqlite')
     .split(',')
