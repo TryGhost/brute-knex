@@ -76,6 +76,8 @@ pnpm run test:e2e:postgres
 
 The MySQL and Postgres commands expect local test databases unless they are running inside the GitHub Actions service containers. The test suite reads standard connection env vars such as `MYSQL_HOST`, `MYSQL_DATABASE`, `POSTGRES_HOST`, and `POSTGRES_DB`.
 
+Use [config.example.json](config.example.json) as a local Knex/store configuration blueprint when setting up those databases outside CI.
+
 ## Releasing
 
 Releases are handled by [`@tryghost/pro-ship`](https://www.npmjs.com/package/@tryghost/pro-ship):

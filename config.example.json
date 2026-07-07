@@ -1,19 +1,41 @@
 {
-  "postgres": {
-    "host": "127.0.0.1",
-    "user": "travis",
-    "password": "",
-    "database": "travis_ci_test",
-    "charset": "utf8"
+  "store": {
+    "tablename": "brute",
+    "createTable": true
   },
   "sqlite": {
-    "filename": "express-brute-knex-test.sqlite"
+    "client": "sqlite3",
+    "connection": {
+      "filename": "./brute-knex.sqlite"
+    },
+    "pool": {
+      "min": 1,
+      "max": 1
+    },
+    "useNullAsDefault": true
   },
   "mysql": {
-    "host": "localhost",
-    "user": "travis",
-    "password": "",
-    "database": "travis",
-    "charset": "utf8"
+    "client": "mysql2",
+    "connection": {
+      "host": "127.0.0.1",
+      "port": 3306,
+      "user": "root",
+      "password": "root",
+      "database": "brute_knex_test"
+    },
+    "pool": {
+      "min": 1,
+      "max": 1
+    }
+  },
+  "postgres": {
+    "client": "pg",
+    "connection": {
+      "host": "127.0.0.1",
+      "port": 5432,
+      "user": "postgres",
+      "password": "postgres",
+      "database": "brute_knex_test"
+    }
   }
 }
