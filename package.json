@@ -48,7 +48,7 @@
   "devDependencies": {
     "@tryghost/pro-ship": "1.1.7",
     "@vitest/coverage-v8": "4.1.10",
-    "mysql2": "3.22.6",
+    "mysql2": "3.23.0",
     "oxfmt": "0.59.0",
     "oxlint": "1.74.0",
     "pg": "8.22.0",
