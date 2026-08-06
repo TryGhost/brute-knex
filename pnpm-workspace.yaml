@@ -1,2 +1,6 @@
+minimumReleaseAge: 4320
+strictDepBuilds: true
+blockExoticSubdeps: true
+
 allowBuilds:
-  sqlite3: true
+  sqlite3@6.0.1: true
