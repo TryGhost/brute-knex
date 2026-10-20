@@ -17,8 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 20.20.0
-          - 22
+          - 22.22.0
           - 24
 
     steps:
@@ -49,8 +48,7 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 20.20.0
-          - 22
+          - 22.22.0
           - 24
 
     services:
@@ -95,8 +93,7 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 20.20.0
-          - 22
+          - 22.22.0
           - 24
 
     services:
@@ -136,7 +133,7 @@ jobs:
         run: pnpm run test:e2e:postgres
 
   lint:
-    name: Lint (Node 20.20.0)
+    name: Lint (Node 22.22.0)
     runs-on: ubuntu-latest
 
     steps:
@@ -152,7 +149,7 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           cache: pnpm
-          node-version: 20.20.0
+          node-version: 22.22.0
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
