@@ -5,24 +5,16 @@
   ],
   "packageRules": [
     {
-      "description": "Keep setup-node's CI runtime value pinned to Node 20.20.0; this is the lowest existing consumer runtime and must not drift to patch releases.",
+      "description": "Keep the exact Node 22.22.0 consumer runtime protected in CI and local development.",
       "matchManagers": [
-        "github-actions"
-      ],
-      "matchDatasources": [
-        "github-releases"
+        "github-actions",
+        "nvm"
       ],
       "matchDepNames": [
         "node"
       ],
-      "matchPackageNames": [
-        "actions/node-versions"
-      ],
-      "matchDepTypes": [
-        "uses-with"
-      ],
-      "matchCurrentValue": "20.20.0",
-      "enabled": false
+      "matchCurrentValue": "22.22.0",
+      "allowedVersions": "/^22\\.22\\.0$/"
     },
     {
       "description": "Keep brute-knex on the Knex version currently shared by Ghost and Daisy; update this only after both consumers move together.",
@@ -47,13 +39,6 @@
       ],
       "matchCurrentValue": "8.4",
       "allowedVersions": "8.4"
-    },
-    {
-      "description": "Keep pnpm on 10.x while this repo supports Node 20.20.0; pnpm 11 requires Node 22.13 or newer.",
-      "matchPackageNames": [
-        "pnpm"
-      ],
-      "allowedVersions": "<11"
     }
   ]
 }
