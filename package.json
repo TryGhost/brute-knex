@@ -1,6 +1,6 @@
 {
   "name": "@tryghost/brute-knex",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "description": "A Knex.js store for express-brute",
   "keywords": [
     "express",
@@ -12,7 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "pnpm@10.34.5",
+  "packageManager": "pnpm@12.16.1",
   "pnpm": {
     "overrides": {
       "underscore": "1.13.8"
@@ -39,22 +39,22 @@
     "test:types": "tsc --noEmit -p tsconfig.types.json"
   },
   "engines": {
-    "node": ">=20.20.0"
+    "node": ">=22.22.0"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:TryGhost/brute-knex.git"
   },
   "devDependencies": {
-    "@tryghost/pro-ship": "1.1.7",
-    "@vitest/coverage-v8": "4.1.10",
-    "mysql2": "3.23.2",
-    "oxfmt": "0.61.0",
-    "oxlint": "1.76.0",
-    "pg": "8.22.0",
+    "@tryghost/pro-ship": "1.1.9",
+    "@vitest/coverage-v8": "5.0.5",
+    "mysql2": "3.24.6",
+    "oxfmt": "0.75.0",
+    "oxlint": "1.90.0",
+    "pg": "8.23.1",
     "sqlite3": "6.0.1",
     "typescript": "7.0.2",
-    "vitest": "4.1.10"
+    "vitest": "5.0.5"
   },
   "dependencies": {
     "express-brute": "1.0.1",

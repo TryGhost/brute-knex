@@ -17,8 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 20.20.0
-          - 22
+          - 22.22.0
           - 24
 
     steps:
@@ -31,7 +30,7 @@ jobs:
         run: corepack enable
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           cache: pnpm
           node-version: ${{ matrix.node }}
@@ -49,13 +48,12 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 20.20.0
-          - 22
+          - 22.22.0
           - 24
 
     services:
       mysql:
-        image: mysql:8.4@sha256:b3b90af2a6552ae30c266fdb7d5dd55f3afb72404bb78d37fe8a23eb857fd3fb
+        image: mysql:8.4@sha256:0f51e63e537a1f176423fa03ef559aabe6fa4372a53160a44bc7e75da7d15364
         env:
           MYSQL_DATABASE: brute_knex_test
           MYSQL_ROOT_PASSWORD: root
@@ -77,7 +75,7 @@ jobs:
         run: corepack enable
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           cache: pnpm
           node-version: ${{ matrix.node }}
@@ -95,13 +93,12 @@ jobs:
       fail-fast: false
       matrix:
         node:
-          - 20.20.0
-          - 22
+          - 22.22.0
           - 24
 
     services:
       postgres:
-        image: postgres:18@sha256:3a82e1f56c8f0f5616a11103ac3d47e632c3938698946a7ad26da0df1334744a
+        image: postgres:18@sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336
         env:
           POSTGRES_DB: brute_knex_test
           POSTGRES_PASSWORD: postgres
@@ -124,7 +121,7 @@ jobs:
         run: corepack enable
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           cache: pnpm
           node-version: ${{ matrix.node }}
@@ -136,7 +133,7 @@ jobs:
         run: pnpm run test:e2e:postgres
 
   lint:
-    name: Lint (Node 20.20.0)
+    name: Lint (Node 22.22.0)
     runs-on: ubuntu-latest
 
     steps:
@@ -149,10 +146,10 @@ jobs:
         run: corepack enable
 
       - name: Set up Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           cache: pnpm
-          node-version: 20.20.0
+          node-version: 22.22.0
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
