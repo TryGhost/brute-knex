@@ -13,11 +13,6 @@
     "access": "public"
   },
   "packageManager": "pnpm@12.16.1",
-  "pnpm": {
-    "overrides": {
-      "underscore": "1.13.8"
-    }
-  },
   "main": "index.js",
   "types": "index.d.ts",
   "files": [
