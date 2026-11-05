@@ -39,7 +39,7 @@
     "test:types": "tsc --noEmit -p tsconfig.types.json"
   },
   "engines": {
-    "node": ">=22.22.0"
+    "node": ">=22.23.4"
   },
   "repository": {
     "type": "git",
