@@ -4,3 +4,6 @@ blockExoticSubdeps: true
 
 allowBuilds:
   sqlite3@6.0.1: true
+
+minimumReleaseAgeExclude:
+  - '@tryghost/pro-ship'
