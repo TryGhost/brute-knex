@@ -5,5 +5,10 @@ blockExoticSubdeps: true
 allowBuilds:
   sqlite3@6.0.1: true
 
+# Keep the release helper and its internal dependency available together.
 minimumReleaseAgeExclude:
   - '@tryghost/pro-ship'
+  - '@tryghost/root-utils'
+
+overrides:
+  underscore: 1.13.8
