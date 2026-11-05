@@ -46,7 +46,7 @@
     "url": "git@github.com:TryGhost/brute-knex.git"
   },
   "devDependencies": {
-    "@tryghost/pro-ship": "1.1.9",
+    "@tryghost/pro-ship": "2.0.0",
     "@vitest/coverage-v8": "5.0.5",
     "mysql2": "3.24.6",
     "oxfmt": "0.75.0",
