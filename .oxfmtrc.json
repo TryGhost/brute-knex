@@ -5,6 +5,7 @@
     "sortPackageJson": false,
     "ignorePatterns": [
         "**/node_modules/**",
+        "**/build/**",
         "**/coverage/**",
         "pnpm-lock.yaml",
         "**/*.json",

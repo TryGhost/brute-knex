@@ -202,6 +202,36 @@ describeDefaultSqlite('default sqlite store', () => {
         expect(result.stderr).toBe('');
         expect(result.status).toBe(0);
     });
+
+    test('schedules thrown callback errors on a timer outside the promise chain', async () => {
+        const context = await createStore('sqlite');
+        let rethrow;
+
+        try {
+            const error = new Error('callback exploded');
+            await context.store.set('rethrow', makeValue(1), 60, () => {
+                throw error;
+            });
+
+            // The rethrow runs in a microtask queued behind this continuation,
+            // so a spy installed here captures exactly that one timer.
+            const timerSpy = vi.spyOn(globalThis, 'setTimeout').mockImplementation((fn) => {
+                rethrow = fn;
+                return 0;
+            });
+
+            try {
+                await Promise.resolve();
+            } finally {
+                timerSpy.mockRestore();
+            }
+
+            expect(rethrow).toBeDefined();
+            expect(() => rethrow()).toThrow(error);
+        } finally {
+            await context.cleanup();
+        }
+    });
 });
 
 describe.each(dialects)('%s store', (dialect) => {
@@ -223,14 +253,42 @@ describe.each(dialects)('%s store', (dialect) => {
     test('sets records and updates existing records', async () => {
         context = await createStore(dialect);
 
-        await context.store.set('client', makeValue(2), 60);
-        await context.store.set('client', makeValue(5), 60);
+        // Small, distinct timestamps also round-trip as valid dates with pg's BIGINT strings.
+        const original = { count: 2, firstRequest: new Date(2000), lastRequest: new Date(2001) };
+        await context.store.set('client', original, 60);
+        const before = await context.store.get('client');
+        await context.store.set(
+            'client',
+            {
+                count: 5,
+                firstRequest: new Date(2002),
+                lastRequest: new Date(2003),
+            },
+            60,
+        );
 
         const result = await context.store.get('client');
 
         expect(result.count).toBe(5);
-        expect(result.firstRequest).toBeInstanceOf(Date);
-        expect(result.lastRequest).toBeInstanceOf(Date);
+        expect(Number.isNaN(before.firstRequest.getTime())).toBe(false);
+        expect(result.firstRequest).toEqual(before.firstRequest);
+        // pg returns BIGINT strings; preserve its existing date interpretation in this refactor.
+        const expectedLastRequest =
+            dialect === 'postgres' ? new Date('2003-01-01T00:00:00.000Z') : new Date(2003);
+        expect(result.lastRequest).toEqual(expectedLastRequest);
+    });
+
+    test('reuses an existing table instead of recreating it', async () => {
+        context = await createStore(dialect);
+
+        await context.store.set('existing', makeValue(4), 60);
+
+        const second = new KnexStore({ knex: context.knex, tablename: context.tablename });
+        await second.ready;
+
+        const result = await second.get('existing');
+
+        expect(result.count).toBe(4);
     });
 
     test('expires records before returning them', async () => {
@@ -240,6 +298,26 @@ describe.each(dialects)('%s store', (dialect) => {
 
         await expect(context.store.get('expired')).resolves.toBeNull();
     });
+
+    test.each([
+        { lifetime: 0, boundary: 1700000000000, afterBoundary: 1700000000001 },
+        { lifetime: 1, boundary: 1700000001000, afterBoundary: 1700000001001 },
+    ])(
+        'expires a $lifetime-second lifetime only after its exact boundary',
+        async ({ lifetime, boundary, afterBoundary }) => {
+            context = await createStore(dialect);
+            const clock = vi.spyOn(Date, 'now').mockReturnValue(1700000000000);
+            try {
+                await context.store.set('boundary', makeValue(1), lifetime);
+                clock.mockReturnValue(boundary);
+                expect(await context.store.get('boundary')).not.toBeNull();
+                clock.mockReturnValue(afterBoundary);
+                await expect(context.store.get('boundary')).resolves.toBeNull();
+            } finally {
+                clock.mockRestore();
+            }
+        },
+    );
 
     test('resets records', async () => {
         context = await createStore(dialect);
@@ -259,6 +337,16 @@ describe.each(dialects)('%s store', (dialect) => {
         const result = await context.store.get('increment');
 
         expect(result.count).toBe(2);
+    });
+
+    test('reports query failures through both the callback and returned promise', async () => {
+        context = await createStore(dialect, { createTable: false });
+        const callback = vi.fn();
+        const operation = context.store.set('missing-table', makeValue(1), 60, callback);
+
+        await expect(operation).rejects.toBeInstanceOf(Error);
+        const error = await operation.catch((reason) => reason);
+        expect(callback).toHaveBeenCalledExactlyOnceWith(error);
     });
 
     test('supports callback-style calls', async () => {

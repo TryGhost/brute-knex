@@ -21,5 +21,8 @@
                 "no-console": "off"
             }
         }
+    ],
+    "ignorePatterns": [
+        "build/**"
     ]
 }

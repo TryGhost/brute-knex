@@ -66,6 +66,11 @@ pnpm test
 pnpm lint
 ```
 
+The implementation lives in `src/index.ts`. `pnpm build` compiles CommonJS and
+generates declarations in `build/`; test and pack commands build automatically.
+The published package keeps the existing CommonJS constructor API for Ghost,
+Daisy, and other `express-brute` consumers.
+
 Database-specific test commands:
 
 ```sh
