@@ -4,7 +4,7 @@ This is a small CommonJS package for `express-brute`; start with `README.md` for
 
 ## Commands
 
-Use the production baseline Node.js `22.22.0` from `.nvmrc`, Corepack, and pnpm 10.x:
+Use the minimum supported baseline Node.js `22.23.4` from `.nvmrc`, Corepack, and the pnpm version pinned in `package.json`:
 
 ```sh
 corepack enable
@@ -31,8 +31,8 @@ MySQL and Postgres tests need local services unless running in GitHub Actions. T
 
 ## Boundaries
 
-- Keep Node.js `22.22.0` as the minimum support floor; Daisy runs that exact version. Test Node 24 for forward compatibility.
-- Dropping Node 20 support is a breaking change; publish it in a major release after Daisy's Node 22 runtime declaration is merged.
+- Keep Node.js `22.23.4` as the minimum support floor; Daisy’s engine declaration, Docker image, and CI use this floor. Test Node 24 for forward compatibility.
+- Dropping Node 20 support is a breaking change; publish it in a major release. Daisy’s Node 22 runtime declaration is already merged.
 - Keep Knex aligned with the version currently shared by Ghost and Daisy (`2.4.2` at the time of writing).
 - Preserve the local Renovate guards for Node, Knex, and MySQL compatibility.
 - Do not mix schema or behavior changes, such as unique-key/upsert changes, into tooling or docs PRs. Those need focused SQLite/MySQL/Postgres compatibility tests.

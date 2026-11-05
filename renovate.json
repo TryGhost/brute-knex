@@ -5,7 +5,7 @@
   ],
   "packageRules": [
     {
-      "description": "Keep the exact Node 22.22.0 consumer runtime protected in CI and local development.",
+      "description": "Keep the exact Node 22.23.4 consumer runtime protected in CI and local development.",
       "matchManagers": [
         "github-actions",
         "nvm"
@@ -13,8 +13,8 @@
       "matchDepNames": [
         "node"
       ],
-      "matchCurrentValue": "22.22.0",
-      "allowedVersions": "/^22\\.22\\.0$/"
+      "matchCurrentValue": "22.23.4",
+      "allowedVersions": "/^22\\.23\\.4$/"
     },
     {
       "description": "Keep brute-knex on the Knex version currently shared by Ghost and Daisy; update this only after both consumers move together.",
