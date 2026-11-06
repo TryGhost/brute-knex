@@ -54,7 +54,7 @@
     "better-sqlite3": "13.0.3",
     "knex": "3.3.0",
     "mysql2": "3.24.6",
-    "oxfmt": "0.75.0",
+    "oxfmt": "0.76.0",
     "oxlint": "1.90.0",
     "pg": "8.23.1",
     "typescript": "7.0.2",
