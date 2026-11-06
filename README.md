@@ -6,17 +6,17 @@ Knex-backed store for [express-brute](https://github.com/AdamPflug/express-brute
 
 `@tryghost/brute-knex` lets `express-brute` share brute-force counters through a Knex table instead of keeping them in process memory. It can create its storage table automatically, use a caller-provided Knex instance, or fall back to a local SQLite database when no Knex instance is supplied.
 
-The package supports Node.js `>=22.23.4`. Dropping Node 20 support requires a major release. CI exercises the store against SQLite, MySQL, and Postgres using Knex `2.4.2`, the version currently shared by Ghost and Daisy.
+The package supports Node.js `>=22.23.4`. Dropping Node 20 support requires a major release. Knex `^3.0.0` is a peer dependency. CI exercises the store against SQLite, MySQL, and Postgres using Knex 3. Apps still on Knex 2 should stay on `@tryghost/brute-knex` 3.x.
 
 ## Installation
 
-Install the package and the Knex database driver your app uses:
+Install the package, Knex, and the database driver your app uses:
 
 ```sh
 npm install @tryghost/brute-knex knex mysql2
 ```
 
-Use `pg` instead of `mysql2` for Postgres, or `sqlite3` for SQLite.
+Use `pg` instead of `mysql2` for Postgres, or `better-sqlite3` for SQLite.
 
 ## Usage
 
@@ -50,7 +50,7 @@ See [example.js](example.js) for a complete Express route.
 ## Options
 
 - `tablename`: table name for brute-force records. Defaults to `brute`.
-- `knex`: Knex instance to use. If omitted, `brute-knex` creates a SQLite database at `./brute-knex.sqlite`.
+- `knex`: Knex instance to use. If omitted, `brute-knex` creates a SQLite database at `./brute-knex.sqlite` using the `better-sqlite3` driver, which must be installed.
 - `createTable`: set to `false` when the table already exists and should not be created automatically.
 
 The table stores `key`, `firstRequest`, `lastRequest`, `lifetime`, and `count` columns. Timestamps are stored as UTC millisecond values.

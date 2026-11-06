@@ -34,7 +34,7 @@ function createKnex(dialect) {
         const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'brute-knex-'));
         const filename = path.join(dir, 'test.sqlite');
         const knex = knexFactory({
-            client: 'sqlite3',
+            client: 'better-sqlite3',
             connection: { filename },
             pool: { min: 1, max: 1 },
             useNullAsDefault: true,
@@ -150,7 +150,7 @@ describeDefaultSqlite('default sqlite store', () => {
       const knexFactory = require('knex');
       const KnexStore = require('./index');
       const knex = knexFactory({
-        client: 'sqlite3',
+        client: 'better-sqlite3',
         connection: {filename: ':memory:'},
         pool: {min: 1, max: 1},
         useNullAsDefault: true

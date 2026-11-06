@@ -18,13 +18,17 @@ test('published package installs and supports CommonJS and typed consumers', () 
         }
 
         fs.writeFileSync(path.join(directory, 'package.json'), JSON.stringify({ private: true }));
+        // better-sqlite3 ships N-API prebuilds; skip the implicit node-gyp rebuild.
+        fs.writeFileSync(
+            path.join(directory, 'pnpm-workspace.yaml'),
+            'allowBuilds:\n  better-sqlite3: false\n',
+        );
         const { devDependencies } = require('../package.json');
         run('pnpm', [
             'add',
             path.join(directory, tarball),
-            `sqlite3@${devDependencies.sqlite3}`,
-            '--allow-build',
-            'sqlite3',
+            `knex@${devDependencies.knex}`,
+            `better-sqlite3@${devDependencies['better-sqlite3']}`,
         ]);
 
         for (const fixture of ['commonjs.cjs', 'types.ts']) {
@@ -38,7 +42,7 @@ test('published package installs and supports CommonJS and typed consumers', () 
             path.join(path.dirname(require.resolve('typescript/package.json')), 'bin', 'tsc'),
             '--noEmit',
             '--strict',
-            // Knex 2.4.2 has existing TS2344 constraint errors in its own declarations.
+            // Skip type-checking Knex's own declarations; only consumer typings matter here.
             '--skipLibCheck',
             '--module',
             'Node20',

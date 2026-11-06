@@ -33,7 +33,8 @@ MySQL and Postgres tests need local services unless running in GitHub Actions. T
 
 - Keep Node.js `22.23.4` as the minimum support floor; Daisy’s engine declaration, Docker image, and CI use this floor. Test Node 24 for forward compatibility.
 - Dropping Node 20 support is a breaking change; publish it in a major release. Daisy’s Node 22 runtime declaration is already merged.
-- Keep Knex aligned with the version currently shared by Ghost and Daisy (`2.4.2` at the time of writing).
+- Knex is a peer dependency (`^3.0.0`); the dev dependency tracks Knex 3. Widening or narrowing the peer range is a breaking change; publish it in a major release.
+- SQLite uses the `better-sqlite3` driver, not `sqlite3`.
 - Preserve the local Renovate guards for Node, Knex, and MySQL compatibility.
 - Do not mix schema or behavior changes, such as unique-key/upsert changes, into tooling or docs PRs. Those need focused SQLite/MySQL/Postgres compatibility tests.
 - If changing store behavior, run the default SQLite path and the relevant database e2e command before handing off.

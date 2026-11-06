@@ -49,7 +49,7 @@ class KnexStore extends ClientStore {
     };
 
     static defaultsKnex: Knex.Config = {
-        client: 'sqlite3',
+        client: 'better-sqlite3',
         connection: {
             filename: './brute-knex.sqlite',
         },

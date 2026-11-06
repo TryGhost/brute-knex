@@ -17,11 +17,21 @@
       "allowedVersions": "/^22\\.23\\.4$/"
     },
     {
-      "description": "Keep brute-knex on the Knex version currently shared by Ghost and Daisy; update this only after both consumers move together.",
+      "description": "Develop and test against the Knex 3 line that the peer range declares; moving to Knex 4 needs a compatibility review and a major release.",
       "matchPackageNames": [
         "knex"
       ],
-      "allowedVersions": "2.4.2"
+      "allowedVersions": "<4"
+    },
+    {
+      "description": "Keep the supported Knex peer range intentional; change it by hand alongside compatibility testing.",
+      "matchPackageNames": [
+        "knex"
+      ],
+      "matchDepTypes": [
+        "peerDependencies"
+      ],
+      "enabled": false
     },
     {
       "description": "Keep CI MySQL services on the 8.4 line; Ghost and existing consumers use MySQL 8 and compatibility testing must not drift to newer server majors.",

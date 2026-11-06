@@ -4,7 +4,7 @@
     "createTable": true
   },
   "sqlite": {
-    "client": "sqlite3",
+    "client": "better-sqlite3",
     "connection": {
       "filename": "./brute-knex.sqlite"
     },
