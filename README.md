@@ -16,7 +16,7 @@ Install the package, Knex, and the database driver your app uses:
 npm install @tryghost/brute-knex knex mysql2
 ```
 
-Use `pg` instead of `mysql2` for Postgres, or `better-sqlite3` for SQLite.
+Use `pg` instead of `mysql2` for Postgres, or `sqlite3` for SQLite.
 
 ## Usage
 
@@ -50,7 +50,7 @@ See [example.js](example.js) for a complete Express route.
 ## Options
 
 - `tablename`: table name for brute-force records. Defaults to `brute`.
-- `knex`: Knex instance to use. If omitted, `brute-knex` creates a SQLite database at `./brute-knex.sqlite` using the `better-sqlite3` driver, which must be installed.
+- `knex`: Knex instance to use. If omitted, `brute-knex` creates a SQLite database at `./brute-knex.sqlite` using the `sqlite3` driver, which must be installed.
 - `createTable`: set to `false` when the table already exists and should not be created automatically.
 
 The table stores `key`, `firstRequest`, `lastRequest`, `lifetime`, and `count` columns. Timestamps are stored as UTC millisecond values.

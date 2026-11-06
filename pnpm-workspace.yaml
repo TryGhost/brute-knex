@@ -2,9 +2,8 @@ minimumReleaseAge: 4320
 strictDepBuilds: true
 blockExoticSubdeps: true
 
-# better-sqlite3 ships N-API prebuilds; skip the implicit node-gyp rebuild.
 allowBuilds:
-  better-sqlite3@13.0.3: false
+  sqlite3@6.0.1: true
 
 # Keep the release helper and its internal dependency available together.
 minimumReleaseAgeExclude:

@@ -18,17 +18,13 @@ test('published package installs and supports CommonJS and typed consumers', () 
         }
 
         fs.writeFileSync(path.join(directory, 'package.json'), JSON.stringify({ private: true }));
-        // better-sqlite3 ships N-API prebuilds; skip the implicit node-gyp rebuild.
-        fs.writeFileSync(
-            path.join(directory, 'pnpm-workspace.yaml'),
-            'allowBuilds:\n  better-sqlite3: false\n',
-        );
         const { devDependencies } = require('../package.json');
         run('pnpm', [
             'add',
             path.join(directory, tarball),
             `knex@${devDependencies.knex}`,
-            `better-sqlite3@${devDependencies['better-sqlite3']}`,
+            `sqlite3@${devDependencies.sqlite3}`,
+            '--allow-build=sqlite3',
         ]);
 
         for (const fixture of ['commonjs.cjs', 'types.ts']) {
