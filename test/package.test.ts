@@ -22,9 +22,9 @@ test('published package installs and supports CommonJS and typed consumers', () 
         run('pnpm', [
             'add',
             path.join(directory, tarball),
+            `knex@${devDependencies.knex}`,
             `sqlite3@${devDependencies.sqlite3}`,
-            '--allow-build',
-            'sqlite3',
+            '--allow-build=sqlite3',
         ]);
 
         for (const fixture of ['commonjs.cjs', 'types.ts']) {
@@ -38,7 +38,7 @@ test('published package installs and supports CommonJS and typed consumers', () 
             path.join(path.dirname(require.resolve('typescript/package.json')), 'bin', 'tsc'),
             '--noEmit',
             '--strict',
-            // Knex 2.4.2 has existing TS2344 constraint errors in its own declarations.
+            // Skip type-checking Knex's own declarations; only consumer typings matter here.
             '--skipLibCheck',
             '--module',
             'Node20',
