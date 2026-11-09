@@ -6,7 +6,7 @@ Knex-backed store for [express-brute](https://github.com/AdamPflug/express-brute
 
 `@tryghost/brute-knex` lets `express-brute` share brute-force counters through a Knex table instead of keeping them in process memory. It can create its storage table automatically, use a caller-provided Knex instance, or fall back to a local SQLite database when no Knex instance is supplied.
 
-The package supports Node.js `>=22.23.4`. Dropping Node 20 support requires a major release. Knex `^3.0.0` is a peer dependency. CI exercises the store against SQLite, MySQL, and Postgres using Knex 3. Apps still on Knex 2 should stay on `@tryghost/brute-knex` 3.x.
+See [`package.json`](package.json) for the supported Node.js versions. Knex `^3.0.0` is a peer dependency. CI exercises the store against SQLite, MySQL, and Postgres using Knex 3. Apps still on Knex 2 should stay on `@tryghost/brute-knex` 3.x.
 
 ## Installation
 
@@ -57,7 +57,9 @@ The table stores `key`, `firstRequest`, `lastRequest`, `lifetime`, and `count` c
 
 ## Development
 
-This repo uses the minimum supported baseline Node.js `22.23.4` for local development through `.nvmrc`, and the pnpm version pinned in `package.json` through Corepack. CI tests Node.js `22.23.4` and `24` for each database.
+Use `.nvmrc` to select Node.js for local development and Corepack to use the pnpm version pinned in `package.json`. Renovate can update `.nvmrc`; local development versions are not pinned to the minimum supported Node.js version.
+
+The `engines.node` field in [`package.json`](package.json) defines the support floor. The [CI workflow](.github/workflows/ci.yml) tests that exact baseline and newer Node.js versions for each database.
 
 ```sh
 corepack enable

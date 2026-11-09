@@ -5,10 +5,9 @@
   ],
   "packageRules": [
     {
-      "description": "Keep the exact Node 22.23.4 consumer runtime protected in CI and local development.",
+      "description": "Keep the exact Node 22.23.4 consumer runtime protected in CI.",
       "matchManagers": [
-        "github-actions",
-        "nvm"
+        "github-actions"
       ],
       "matchDepNames": [
         "node"
