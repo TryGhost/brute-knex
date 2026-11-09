@@ -4,7 +4,7 @@ This is a small CommonJS package for `express-brute`; start with `README.md` for
 
 ## Commands
 
-Use the minimum supported baseline Node.js `22.23.4` from `.nvmrc`, Corepack, and the pnpm version pinned in `package.json`:
+Use `.nvmrc` for local development, Corepack, and the pnpm version pinned in `package.json`:
 
 ```sh
 corepack enable
@@ -31,9 +31,10 @@ MySQL and Postgres tests need local services unless running in GitHub Actions. T
 
 ## Boundaries
 
-- Keep Node.js `22.23.4` as the minimum support floor; Daisy’s engine declaration, Docker image, and CI use this floor. Test Node 24 for forward compatibility.
-- Dropping Node 20 support is a breaking change; publish it in a major release. Daisy’s Node 22 runtime declaration is already merged.
+- Treat `engines.node` in `package.json` as the minimum support floor. Keep CI coverage of that exact baseline and newer Node.js versions for forward compatibility.
+- Allow Renovate to update `.nvmrc`. Local development Node.js versions must remain eligible for updates independently of the support floor.
+- Dropping support for a Node.js version requires a major release.
 - Knex is a peer dependency (`^3.0.0`); the dev dependency tracks Knex 3. Widening or narrowing the peer range is a breaking change; publish it in a major release.
-- Preserve the local Renovate guards for Node, Knex, and MySQL compatibility.
+- Preserve the Renovate guards for the CI Node.js baseline, Knex, and MySQL compatibility. Do not extend the CI baseline guard to the `nvm` manager.
 - Do not mix schema or behavior changes, such as unique-key/upsert changes, into tooling or docs PRs. Those need focused SQLite/MySQL/Postgres compatibility tests.
 - If changing store behavior, run the default SQLite path and the relevant database e2e command before handing off.
