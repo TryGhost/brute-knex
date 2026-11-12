@@ -41,7 +41,7 @@
     "pretest:e2e:postgres": "pnpm build"
   },
   "engines": {
-    "node": ">=22.23.4"
+    "node": ">=22.23.5"
   },
   "repository": {
     "type": "git",
