@@ -1,6 +1,6 @@
 {
   "name": "@tryghost/brute-knex",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "A Knex.js store for express-brute",
   "keywords": [
     "express",
