@@ -12,7 +12,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "pnpm@12.18.0",
+  "packageManager": "pnpm@12.20.0",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
